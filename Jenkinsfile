@@ -1,8 +1,11 @@
+
 pipeline {
     agent any
 
     environment {
         DOCKER = '/Users/rkalyan/.docker/bin/docker'
+        AWS_REGION = 'us-east-1'
+        EC2_INSTANCE = 'i-090065bd6065310a0'
     }
 
     stages {
@@ -29,6 +32,20 @@ pipeline {
         stage('Test') {
             steps {
                 sh '${DOCKER} images pharmacy-stock-alert'
+            }
+        }
+
+        stage('Test AWS SSM') {
+            steps {
+                sh 'aws sts get-caller-identity'
+
+                sh '''
+                    aws ssm send-command \
+                        --instance-ids ${EC2_INSTANCE} \
+                        --document-name "AWS-RunShellScript" \
+                        --parameters 'commands=["echo Jenkins to EC2 SSM working"]' \
+                        --region ${AWS_REGION}
+                '''
             }
         }
     }
