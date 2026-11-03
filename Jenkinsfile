@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER = '/Users/rkalyan/.docker/bin/docker'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -9,15 +13,22 @@ pipeline {
             }
         }
 
+        stage('Check Docker') {
+            steps {
+                sh '${DOCKER} --version'
+                sh '${DOCKER} info'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t pharmacy-stock-alert ./app'
+                sh '${DOCKER} build -t pharmacy-stock-alert ./app'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'docker images pharmacy-stock-alert'
+                sh '${DOCKER} images pharmacy-stock-alert'
             }
         }
     }
