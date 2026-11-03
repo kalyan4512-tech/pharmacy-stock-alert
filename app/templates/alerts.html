@@ -3,109 +3,102 @@
 {% block title %}Alert Center{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+<div class="page-header-block">
     <div>
-        <h1 class="h3 fw-bold text-dark mb-1">Centralized Alert Center</h1>
-        <p class="text-muted mb-0">Monitor active low-stock thresholds, impending expiries, and quarantined medications.</p>
+        <h1 class="page-title">Centralized Alert Center</h1>
+        <p class="page-subtitle">Track replenishment deficits, 30-day expiry windows, and quarantined inventory.</p>
     </div>
-    <div class="d-flex gap-2">
-        <a href="{{ url_for('low_stock_alerts_page') }}" class="btn btn-outline-danger shadow-sm">
-            <i class="bi bi-graph-down-arrow me-1"></i> Low Stock ({{ metrics.total_low_stock }})
+    <div class="d-flex align-items-center gap-2">
+        <a href="{{ url_for('low_stock_alerts_page') }}" class="btn-secondary-white">
+            <i class="bi bi-arrow-down-circle text-danger"></i>
+            <span>Low Stock ({{ metrics.total_low_stock }})</span>
         </a>
-        <a href="{{ url_for('expiry_alerts_page') }}" class="btn btn-outline-warning text-dark shadow-sm">
-            <i class="bi bi-hourglass-split me-1"></i> Expiring Soon ({{ metrics.expiring_soon_count + metrics.expiring_today_count }})
+        <a href="{{ url_for('expiry_alerts_page') }}" class="btn-secondary-white">
+            <i class="bi bi-hourglass-split text-warning"></i>
+            <span>Expiring Soon ({{ metrics.expiring_soon_count + metrics.expiring_today_count }})</span>
         </a>
-        <a href="{{ url_for('expired_medicines_page') }}" class="btn btn-danger shadow-sm">
-            <i class="bi bi-x-octagon-fill me-1"></i> Expired ({{ metrics.expired_count }})
+        <a href="{{ url_for('expired_medicines_page') }}" class="btn-danger-soft">
+            <i class="bi bi-slash-circle"></i>
+            <span>Quarantine ({{ metrics.expired_count }})</span>
         </a>
     </div>
 </div>
 
-<!-- Alert Statistics Row -->
+<!-- Alert Overview Stat Cards -->
 <div class="row g-3 mb-4">
     <div class="col-md-4">
-        <div class="card border-0 shadow-sm border-start border-danger border-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="text-danger small fw-semibold text-uppercase">Stock Warning</span>
-                        <h3 class="fw-bold text-danger mb-0">{{ metrics.total_low_stock }}</h3>
-                        <small class="text-muted">{{ metrics.out_of_stock_count }} Out of Stock &bull; {{ metrics.low_stock_count }} Low</small>
-                    </div>
-                    <div class="stat-icon-wrapper bg-danger-subtle text-danger">
-                        <i class="bi bi-box-seam"></i>
-                    </div>
-                </div>
+        <div class="kpi-card kpi-low">
+            <div class="kpi-header">
+                <span class="kpi-label">Stock Warnings</span>
+                <div class="kpi-icon-wrap icon-low"><i class="bi bi-arrow-down-circle"></i></div>
+            </div>
+            <div class="kpi-value text-warning-emphasis font-tabular">{{ metrics.total_low_stock }}</div>
+            <div class="kpi-subtext">
+                <span class="text-danger fw-semibold">{{ metrics.out_of_stock_count }} out of stock</span> &bull; <span>{{ metrics.low_stock_count }} below threshold</span>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card border-0 shadow-sm border-start border-warning border-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="text-warning-emphasis small fw-semibold text-uppercase">30-Day Expiry Window</span>
-                        <h3 class="fw-bold text-warning-emphasis mb-0">{{ metrics.expiring_soon_count + metrics.expiring_today_count }}</h3>
-                        <small class="text-muted">{{ metrics.expiring_today_count }} expiring today</small>
-                    </div>
-                    <div class="stat-icon-wrapper bg-warning-subtle text-warning-emphasis">
-                        <i class="bi bi-hourglass-bottom"></i>
-                    </div>
-                </div>
+        <div class="kpi-card kpi-soon">
+            <div class="kpi-header">
+                <span class="kpi-label">30-Day Expiry Window</span>
+                <div class="kpi-icon-wrap icon-soon"><i class="bi bi-hourglass-split"></i></div>
+            </div>
+            <div class="kpi-value font-tabular" style="color: #A16207;">{{ metrics.expiring_soon_count + metrics.expiring_today_count }}</div>
+            <div class="kpi-subtext">
+                <span class="fw-semibold text-danger">{{ metrics.expiring_today_count }} today</span> &bull; <span>{{ metrics.expiring_soon_count }} in 30 days</span>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card border-0 shadow-sm border-start border-danger border-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="text-danger small fw-semibold text-uppercase">Quarantine Required</span>
-                        <h3 class="fw-bold text-danger mb-0">{{ metrics.expired_count }}</h3>
-                        <small class="text-danger fw-semibold">Disposal & replacement required</small>
-                    </div>
-                    <div class="stat-icon-wrapper bg-danger-subtle text-danger">
-                        <i class="bi bi-shield-x"></i>
-                    </div>
-                </div>
+        <div class="kpi-card kpi-critical">
+            <div class="kpi-header">
+                <span class="kpi-label">Quarantined Expired</span>
+                <div class="kpi-icon-wrap icon-critical"><i class="bi bi-slash-circle"></i></div>
+            </div>
+            <div class="kpi-value text-danger font-tabular">{{ metrics.expired_count }}</div>
+            <div class="kpi-subtext text-danger fw-semibold">
+                <i class="bi bi-shield-x"></i> Immediate destruction / return
             </div>
         </div>
     </div>
 </div>
 
-<!-- Tabs for Alerts -->
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-bottom">
-        <ul class="nav nav-tabs card-header-tabs" id="alertTabs" role="tablist">
+<!-- Tabbed Alert Tables -->
+<div class="surface-card">
+    <div class="card-header-clean border-bottom-0 pb-0">
+        <ul class="nav nav-tabs border-0" id="alertTabLinks" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active fw-semibold" id="low-stock-tab" data-bs-toggle="tab" data-bs-target="#low-stock-content" type="button" role="tab">
-                    <i class="bi bi-graph-down text-danger me-1"></i> Low Stock Alerts ({{ low_stock_list|length }})
+                <button class="nav-link active fw-semibold text-dark px-3 py-2 border-0 border-bottom border-3 border-teal" id="low-tab" data-bs-toggle="tab" data-bs-target="#low-pane" type="button" role="tab" style="border-color: var(--brand-primary) !important;">
+                    <i class="bi bi-arrow-down-circle text-danger me-1"></i> Low Stock Alerts ({{ low_stock_list|length }})
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link fw-semibold" id="expiry-tab" data-bs-toggle="tab" data-bs-target="#expiry-content" type="button" role="tab">
-                    <i class="bi bi-clock-history text-warning me-1"></i> Expiring Soon ({{ expiry_list|length }})
+                <button class="nav-link fw-semibold text-secondary px-3 py-2 border-0" id="expiry-tab" data-bs-toggle="tab" data-bs-target="#expiry-pane" type="button" role="tab">
+                    <i class="bi bi-hourglass-split text-warning me-1"></i> Expiring Soon ({{ expiry_list|length }})
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link fw-semibold" id="expired-tab" data-bs-toggle="tab" data-bs-target="#expired-content" type="button" role="tab">
-                    <i class="bi bi-x-circle-fill text-danger me-1"></i> Expired Stock ({{ expired_list|length }})
+                <button class="nav-link fw-semibold text-secondary px-3 py-2 border-0" id="expired-tab" data-bs-toggle="tab" data-bs-target="#expired-pane" type="button" role="tab">
+                    <i class="bi bi-slash-circle text-danger me-1"></i> Quarantined Expired ({{ expired_list|length }})
                 </button>
             </li>
         </ul>
     </div>
-    <div class="card-body p-0">
-        <div class="tab-content" id="alertTabsContent">
+
+    <div class="card-body-clean p-0">
+        <div class="tab-content" id="alertTabPanes">
             <!-- Low Stock Pane -->
-            <div class="tab-pane fade show active" id="low-stock-content" role="tabpanel">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+            <div class="tab-pane fade show active" id="low-pane" role="tabpanel">
+                <div class="table-responsive-clean">
+                    <table class="table-clean">
+                        <thead>
                             <tr>
-                                <th>Medicine</th>
+                                <th>Medicine &amp; Batch</th>
                                 <th>Category</th>
                                 <th class="text-center">Current Units</th>
                                 <th class="text-center">Min Threshold</th>
+                                <th>Deficit</th>
                                 <th>Supplier Contact</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-end">Action</th>
@@ -114,30 +107,44 @@
                         <tbody>
                             {% if low_stock_list %}
                                 {% for med in low_stock_list %}
-                                    <tr>
+                                    <tr class="{% if med.quantity == 0 %}row-critical{% else %}row-warning{% endif %}">
                                         <td>
-                                            <span class="fw-bold text-dark">{{ med.name }}</span>
-                                            <small class="d-block text-muted">Batch: {{ med.batch_number }} &bull; {{ med.manufacturer }}</small>
+                                            <div class="fw-semibold text-dark">{{ med.name }}</div>
+                                            <div class="small text-secondary">
+                                                <span class="batch-pill">{{ med.batch_number }}</span>
+                                                <span class="ms-1">&bull; {{ med.manufacturer }}</span>
+                                            </div>
                                         </td>
-                                        <td><span class="badge bg-light text-dark border">{{ med.category }}</span></td>
+                                        <td><span class="badge bg-light text-secondary border font-tabular">{{ med.category }}</span></td>
+                                        <td class="text-center font-tabular fw-bold text-danger">{{ med.quantity }}</td>
+                                        <td class="text-center font-tabular text-secondary">{{ med.min_threshold }}</td>
+                                        <td class="font-tabular">
+                                            {% set deficit = med.min_threshold - med.quantity %}
+                                            <span class="badge-status badge-status-low">
+                                                Short by {{ deficit if deficit > 0 else 0 }} units
+                                            </span>
+                                        </td>
+                                        <td><span class="small text-secondary">{{ med.supplier }}</span></td>
                                         <td class="text-center">
-                                            <span class="fs-6 fw-bold {% if med.quantity == 0 %}text-danger{% else %}text-danger{% endif %}">{{ med.quantity }}</span>
+                                            {% if med.quantity == 0 %}
+                                                <span class="badge-status badge-status-critical">OUT OF STOCK</span>
+                                            {% else %}
+                                                <span class="badge-status badge-status-low">LOW STOCK</span>
+                                            {% endif %}
                                         </td>
-                                        <td class="text-center">{{ med.min_threshold }}</td>
-                                        <td><small>{{ med.supplier }}</small></td>
-                                        <td class="text-center"><span class="badge {{ med.stock_badge }}">{{ med.stock_label }}</span></td>
                                         <td class="text-end">
-                                            <a href="{{ url_for('edit_medicine_route', medicine_id=med.id) }}" class="btn btn-sm btn-primary">
-                                                <i class="bi bi-cart-plus me-1"></i> Restock
+                                            <a href="{{ url_for('edit_medicine_route', medicine_id=med.id) }}" class="btn-primary-teal py-1 px-2 text-decoration-none small">
+                                                <i class="bi bi-cart-plus"></i> Reorder
                                             </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
                             {% else %}
                                 <tr>
-                                    <td colspan="7" class="text-center py-4 text-success">
-                                        <i class="bi bi-check-circle fs-3 d-block mb-1"></i>
-                                        All stock levels are currently above minimum threshold.
+                                    <td colspan="8" class="text-center py-5">
+                                        <i class="bi bi-check-circle text-success fs-1 d-block mb-2"></i>
+                                        <h6 class="fw-bold text-dark">Stock Levels Healthy</h6>
+                                        <p class="text-secondary small mb-0">No medicines are currently at or below minimum threshold.</p>
                                     </td>
                                 </tr>
                             {% endif %}
@@ -147,51 +154,63 @@
             </div>
 
             <!-- Expiring Soon Pane -->
-            <div class="tab-pane fade" id="expiry-content" role="tabpanel">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+            <div class="tab-pane fade" id="expiry-pane" role="tabpanel">
+                <div class="table-responsive-clean">
+                    <table class="table-clean">
+                        <thead>
                             <tr>
-                                <th>Medicine</th>
-                                <th>Batch</th>
-                                <th class="text-center">Units Remaining</th>
+                                <th>Medicine &amp; Batch</th>
+                                <th>Category</th>
+                                <th class="text-center">Stock Units</th>
                                 <th>Expiry Date</th>
-                                <th>Days Remaining</th>
-                                <th class="text-center">Status</th>
+                                <th>Remaining Window</th>
+                                <th class="text-center">Classification</th>
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% if expiry_list %}
                                 {% for med in expiry_list %}
-                                    <tr class="{{ med.expiry_row_class }}">
+                                    <tr class="{% if med.is_critical_7_days %}row-critical{% else %}row-warning{% endif %}">
                                         <td>
-                                            <span class="fw-bold text-dark">{{ med.name }}</span>
-                                            <small class="d-block text-muted">{{ med.manufacturer }}</small>
+                                            <div class="fw-semibold text-dark">{{ med.name }}</div>
+                                            <div class="small text-secondary">
+                                                <span class="batch-pill">{{ med.batch_number }}</span>
+                                                <span class="ms-1">&bull; {{ med.manufacturer }}</span>
+                                            </div>
                                         </td>
-                                        <td><code>{{ med.batch_number }}</code></td>
-                                        <td class="text-center fw-bold">{{ med.quantity }}</td>
-                                        <td>{{ med.expiry_date }}</td>
+                                        <td><span class="badge bg-light text-secondary border font-tabular">{{ med.category }}</span></td>
+                                        <td class="text-center font-tabular fw-bold text-dark">{{ med.quantity }}</td>
+                                        <td class="font-tabular fw-medium text-dark">{{ med.expiry_date }}</td>
                                         <td>
                                             {% if med.expiry_status == 'EXPIRING_TODAY' %}
-                                                <span class="text-danger fw-bold"><i class="bi bi-alarm me-1"></i> TODAY!</span>
+                                                <span class="badge-status badge-status-critical"><i class="bi bi-alarm"></i> TODAY</span>
+                                            {% elif med.is_critical_7_days %}
+                                                <span class="badge-status badge-status-critical">{{ med.days_remaining }} day(s) left</span>
                                             {% else %}
-                                                <span class="text-warning-emphasis fw-bold">{{ med.days_remaining }} days</span>
+                                                <span class="badge-status badge-status-soon">{{ med.days_remaining }} day(s) left</span>
                                             {% endif %}
                                         </td>
-                                        <td class="text-center"><span class="badge {{ med.expiry_badge }}">{{ med.expiry_label }}</span></td>
+                                        <td class="text-center">
+                                            {% if med.is_critical_7_days %}
+                                                <span class="badge-status badge-status-critical">CRITICAL EXPIRY</span>
+                                            {% else %}
+                                                <span class="badge-status badge-status-soon">EXPIRING SOON</span>
+                                            {% endif %}
+                                        </td>
                                         <td class="text-end">
-                                            <a href="{{ url_for('edit_medicine_route', medicine_id=med.id) }}" class="btn btn-sm btn-outline-secondary">
-                                                <i class="bi bi-pencil me-1"></i> Review
+                                            <a href="{{ url_for('edit_medicine_route', medicine_id=med.id) }}" class="btn-secondary-white py-1 px-2 text-decoration-none small">
+                                                <i class="bi bi-pencil"></i> Review
                                             </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
                             {% else %}
                                 <tr>
-                                    <td colspan="7" class="text-center py-4 text-success">
-                                        <i class="bi bi-check-circle fs-3 d-block mb-1"></i>
-                                        No medicines expiring within the next 30 days.
+                                    <td colspan="7" class="text-center py-5">
+                                        <i class="bi bi-shield-check text-success fs-1 d-block mb-2"></i>
+                                        <h6 class="fw-bold text-dark">No Near-Term Expiries</h6>
+                                        <p class="text-secondary small mb-0">All active medication batches have more than 30 days of shelf stability.</p>
                                     </td>
                                 </tr>
                             {% endif %}
@@ -200,38 +219,41 @@
                 </div>
             </div>
 
-            <!-- Expired Stock Pane -->
-            <div class="tab-pane fade" id="expired-content" role="tabpanel">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+            <!-- Quarantined Expired Pane -->
+            <div class="tab-pane fade" id="expired-pane" role="tabpanel">
+                <div class="table-responsive-clean">
+                    <table class="table-clean">
+                        <thead>
                             <tr>
-                                <th>Medicine</th>
-                                <th>Batch</th>
-                                <th class="text-center">Expired Units</th>
-                                <th>Expiry Date</th>
+                                <th>Medicine &amp; Batch</th>
+                                <th>Category</th>
+                                <th class="text-center">Quarantined Units</th>
+                                <th>Expired On</th>
                                 <th>Status</th>
                                 <th>Financial Loss</th>
-                                <th class="text-end">Quarantine Action</th>
+                                <th class="text-end">Disposal Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% if expired_list %}
                                 {% for med in expired_list %}
-                                    <tr class="table-danger">
+                                    <tr class="row-critical">
                                         <td>
-                                            <span class="fw-bold text-danger">{{ med.name }}</span>
-                                            <small class="d-block text-muted">{{ med.manufacturer }}</small>
+                                            <div class="fw-semibold text-danger">{{ med.name }}</div>
+                                            <div class="small text-secondary">
+                                                <span class="batch-pill">{{ med.batch_number }}</span>
+                                                <span class="ms-1">&bull; {{ med.manufacturer }}</span>
+                                            </div>
                                         </td>
-                                        <td><code>{{ med.batch_number }}</code></td>
-                                        <td class="text-center fw-bold text-danger">{{ med.quantity }}</td>
-                                        <td>{{ med.expiry_date }}</td>
-                                        <td><span class="badge bg-danger">EXPIRED</span></td>
-                                        <td>₹{{ "%.2f"|format(med.quantity * med.purchase_price) }}</td>
+                                        <td><span class="badge bg-light text-secondary border font-tabular">{{ med.category }}</span></td>
+                                        <td class="text-center font-tabular fw-bold text-danger">{{ med.quantity }}</td>
+                                        <td class="font-tabular fw-semibold text-danger">{{ med.expiry_date }}</td>
+                                        <td><span class="badge-status badge-status-critical">{{ med.expiry_message }}</span></td>
+                                        <td class="font-tabular fw-medium text-danger">₹{{ "%.2f"|format(med.quantity * med.purchase_price) }}</td>
                                         <td class="text-end">
-                                            <form action="{{ url_for('delete_medicine_route', medicine_id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Dispose and remove expired batch {{ med.batch_number }}?');">
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-trash-fill me-1"></i> Dispose / Remove
+                                            <form action="{{ url_for('delete_medicine_route', medicine_id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirm safe disposal and destruction of expired batch {{ med.batch_number }}?');">
+                                                <button type="submit" class="btn btn-sm btn-danger py-1 px-2">
+                                                    <i class="bi bi-trash"></i> Destroy Batch
                                                 </button>
                                             </form>
                                         </td>
@@ -239,9 +261,10 @@
                                 {% endfor %}
                             {% else %}
                                 <tr>
-                                    <td colspan="7" class="text-center py-4 text-success">
-                                        <i class="bi bi-shield-check fs-3 d-block mb-1"></i>
-                                        Great! Zero expired medications in stock.
+                                    <td colspan="7" class="text-center py-5">
+                                        <i class="bi bi-shield-check text-success fs-1 d-block mb-2"></i>
+                                        <h6 class="fw-bold text-dark">Quarantine Area Empty</h6>
+                                        <p class="text-secondary small mb-0">No expired medicine batches found in active stock records.</p>
                                     </td>
                                 </tr>
                             {% endif %}
@@ -253,4 +276,3 @@
     </div>
 </div>
 {% endblock %}
-

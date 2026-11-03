@@ -94,14 +94,16 @@ def get_expiry_status(expiry_date_val, current_date=None):
             "message": "Expires today"
         }
     elif days_diff <= 30:
+        is_crit_7 = (days_diff <= 7)
         return {
             "code": "EXPIRING_SOON",
-            "label": "EXPIRING SOON",
-            "badge_class": "bg-warning text-dark",
-            "row_class": "table-warning",
+            "label": "CRITICAL EXPIRY" if is_crit_7 else "EXPIRING SOON",
+            "is_critical_7_days": is_crit_7,
+            "badge_class": "bg-danger" if is_crit_7 else "bg-warning text-dark",
+            "row_class": "table-danger" if is_crit_7 else "table-warning",
             "days_remaining": days_diff,
             "is_alert": True,
-            "message": f"Expires in {days_diff} day(s)"
+            "message": f"CRITICAL: {days_diff} day(s) left" if is_crit_7 else f"Expires in {days_diff} day(s)"
         }
     else:
         return {
@@ -132,6 +134,7 @@ def evaluate_medicine(medicine, current_date=None):
     med["days_remaining"] = expiry_eval["days_remaining"]
     med["expiry_message"] = expiry_eval.get("message", "")
     med["expiry_alert"] = expiry_eval["is_alert"]
+    med["is_critical_7_days"] = expiry_eval.get("is_critical_7_days", False)
 
     # Overall Status: An expired medicine must never be marked normal
     med["is_expired_or_today"] = expiry_eval["code"] in ["EXPIRED", "EXPIRING_TODAY"]

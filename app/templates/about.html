@@ -1,145 +1,162 @@
 {% extends "base.html" %}
 
-{% block title %}About Project{% endblock %}
+{% block title %}About MedStock PRO{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-lg-10">
+    <div class="col-xl-10 col-lg-11 col-md-12">
         <!-- Hero Card -->
-        <div class="card border-0 shadow-sm mb-4 bg-primary text-white overflow-hidden position-relative">
-            <div class="card-body p-4 p-md-5">
-                <span class="badge bg-white text-primary mb-2 fw-semibold px-3 py-2">B.Tech AI & Data Science Capstone</span>
-                <h1 class="display-6 fw-bold mb-2">Pharmacy Medicine Stock Alert System</h1>
-                <p class="lead mb-4 text-white-50">Enterprise-grade inventory management, real-time threshold monitoring, expiry quarantine control, and automated AWS DevOps CI/CD pipeline.</p>
+        <div class="surface-card mb-4" style="background: linear-gradient(135deg, #0F766E 0%, #115E59 100%); color: #FFFFFF; border: none;">
+            <div class="card-body-clean p-4 p-md-5">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill" style="background: rgba(255, 255, 255, 0.15); font-size: 0.78rem; font-weight: 600;">
+                    <i class="bi bi-mortarboard-fill"></i> B.Tech Artificial Intelligence &amp; Data Science Capstone
+                </div>
+                <h1 class="display-6 fw-bold mb-2 text-white">Pharmacy Medicine Stock Alert System</h1>
+                <p class="mb-4 text-white-50" style="max-width: 720px; font-size: 1rem; line-height: 1.6;">
+                    Enterprise pharmaceutical stock management with real-time threshold monitoring, 30-day expiry early warning, and a zero-SSH automated DevOps CI/CD pipeline deploying to Amazon EC2 via AWS Systems Manager (SSM).
+                </p>
                 <div class="d-flex flex-wrap gap-2">
-                    <span class="badge bg-white-50 text-white"><i class="bi bi-code-slash me-1"></i> Python & Flask</span>
-                    <span class="badge bg-white-50 text-white"><i class="bi bi-database me-1"></i> SQLite with Persistent Volume</span>
-                    <span class="badge bg-white-50 text-white"><i class="bi bi-box-seam me-1"></i> Docker Containerization</span>
-                    <span class="badge bg-white-50 text-white"><i class="bi bi-gear-wide-connected me-1"></i> Jenkins Automated Pipeline</span>
-                    <span class="badge bg-white-50 text-white"><i class="bi bi-cloud-arrow-up me-1"></i> Amazon ECR & EC2</span>
-                    <span class="badge bg-white-50 text-white"><i class="bi bi-shield-check me-1"></i> AWS Systems Manager (SSM)</span>
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; padding: 6px 12px; border-radius: 6px;">Python &amp; Flask 3.1</span>
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; padding: 6px 12px; border-radius: 6px;">Docker Container</span>
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; padding: 6px 12px; border-radius: 6px;">Jenkins Automation</span>
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; padding: 6px 12px; border-radius: 6px;">Amazon ECR</span>
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; padding: 6px 12px; border-radius: 6px;">Amazon EC2 &amp; SSM</span>
+                    <span class="badge" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; padding: 6px 12px; border-radius: 6px;">Persistent Volume</span>
                 </div>
             </div>
         </div>
 
-        <!-- Architecture Breakdown -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white py-3 border-bottom">
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-diagram-3-fill text-primary me-2"></i> End-to-End DevOps Pipeline & Architecture</h5>
+        <!-- 6-Stage CI/CD Architecture Flow -->
+        <div class="surface-card mb-4">
+            <div class="card-header-clean">
+                <h2 class="card-title-clean">
+                    <i class="bi bi-diagram-3 text-primary"></i>
+                    <span>Automated DevOps CI/CD Architecture (Zero-SSH)</span>
+                </h2>
+                <span class="badge-status badge-status-healthy font-tabular">Pipeline Verified</span>
             </div>
-            <div class="card-body p-4">
-                <div class="row g-4 text-center">
+            <div class="card-body-clean p-4">
+                <div class="row g-3 text-center">
                     <div class="col-md-2 col-4">
-                        <div class="p-3 bg-light rounded border h-100">
-                            <i class="bi bi-laptop fs-1 text-primary mb-2"></i>
-                            <h6 class="fw-bold mb-1">1. VS Code</h6>
-                            <small class="text-muted">Local Dev & Git Commit</small>
+                        <div class="p-3 rounded border h-100" style="background: #FAFAFA;">
+                            <div class="mb-2 text-primary fs-3"><i class="bi bi-code-slash"></i></div>
+                            <div class="fw-bold small text-dark">1. VS Code</div>
+                            <div class="text-secondary" style="font-size: 0.72rem;">Local Dev &amp; Git Push</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-4">
-                        <div class="p-3 bg-light rounded border h-100">
-                            <i class="bi bi-github fs-1 text-dark mb-2"></i>
-                            <h6 class="fw-bold mb-1">2. GitHub</h6>
-                            <small class="text-muted">Version Control Repository</small>
+                        <div class="p-3 rounded border h-100" style="background: #FAFAFA;">
+                            <div class="mb-2 text-dark fs-3"><i class="bi bi-github"></i></div>
+                            <div class="fw-bold small text-dark">2. GitHub</div>
+                            <div class="text-secondary" style="font-size: 0.72rem;">Origin Main Branch</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-4">
-                        <div class="p-3 bg-light rounded border h-100">
-                            <i class="bi bi-gear-fill fs-1 text-danger mb-2"></i>
-                            <h6 class="fw-bold mb-1">3. Jenkins</h6>
-                            <small class="text-muted">Test & Docker Build</small>
+                        <div class="p-3 rounded border h-100" style="background: #FAFAFA;">
+                            <div class="mb-2 text-danger fs-3"><i class="bi bi-gear-fill"></i></div>
+                            <div class="fw-bold small text-dark">3. Jenkins</div>
+                            <div class="text-secondary" style="font-size: 0.72rem;">Pytest &amp; Docker Build</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-4">
-                        <div class="p-3 bg-light rounded border h-100">
-                            <i class="bi bi-box-fill fs-1 text-warning mb-2"></i>
-                            <h6 class="fw-bold mb-1">4. AWS ECR</h6>
-                            <small class="text-muted">Container Registry</small>
+                        <div class="p-3 rounded border h-100" style="background: #FAFAFA;">
+                            <div class="mb-2 text-warning fs-3"><i class="bi bi-box-fill"></i></div>
+                            <div class="fw-bold small text-dark">4. AWS ECR</div>
+                            <div class="text-secondary" style="font-size: 0.72rem;">Image Registry</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-4">
-                        <div class="p-3 bg-light rounded border h-100">
-                            <i class="bi bi-terminal fs-1 text-info mb-2"></i>
-                            <h6 class="fw-bold mb-1">5. AWS SSM</h6>
-                            <small class="text-muted">Zero-SSH Run Command</small>
+                        <div class="p-3 rounded border h-100" style="background: #FAFAFA;">
+                            <div class="mb-2 text-info fs-3"><i class="bi bi-terminal"></i></div>
+                            <div class="fw-bold small text-dark">5. AWS SSM</div>
+                            <div class="text-secondary" style="font-size: 0.72rem;">Zero-SSH Run Command</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-4">
-                        <div class="p-3 bg-light rounded border h-100">
-                            <i class="bi bi-cloud-check-fill fs-1 text-success mb-2"></i>
-                            <h6 class="fw-bold mb-1">6. AWS EC2</h6>
-                            <small class="text-muted">Live Port 5001 App</small>
+                        <div class="p-3 rounded border h-100" style="background: #FAFAFA;">
+                            <div class="mb-2 text-success fs-3"><i class="bi bi-cloud-check-fill"></i></div>
+                            <div class="fw-bold small text-dark">6. AWS EC2</div>
+                            <div class="text-secondary" style="font-size: 0.72rem;">Port 5001 Live App</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- System Logic Specifications -->
+        <!-- Logic Rules Specifications -->
         <div class="row g-4 mb-4">
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-white py-3 border-bottom">
-                        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-sliders text-danger me-2"></i> Stock Alert Logic Rules</h6>
+                <div class="surface-card h-100 mb-0">
+                    <div class="card-header-clean">
+                        <h2 class="card-title-clean">
+                            <i class="bi bi-sliders text-warning"></i>
+                            <span>Stock Replenishment Rules</span>
+                        </h2>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush small">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><strong>Out of Stock:</strong> <code>Quantity == 0</code></span>
-                                <span class="badge bg-danger">Critical / Danger</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><strong>Low Stock:</strong> <code>0 &lt; Quantity &le; Min Threshold</code></span>
-                                <span class="badge bg-danger">Warning Alert</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><strong>Normal Stock:</strong> <code>Quantity &gt; Min Threshold</code></span>
-                                <span class="badge bg-success">Optimal</span>
-                            </li>
-                        </ul>
+                    <div class="card-body-clean p-3">
+                        <div class="d-flex flex-column gap-2 small">
+                            <div class="d-flex justify-content-between p-2 rounded" style="background: #FEF2F2;">
+                                <span><strong class="text-danger">Out of Stock:</strong> <code>Quantity == 0</code></span>
+                                <span class="badge-status badge-status-critical">CRITICAL</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded" style="background: #FFF7ED;">
+                                <span><strong class="text-warning-emphasis">Low Stock:</strong> <code>0 &lt; Quantity &le; Min Threshold</code></span>
+                                <span class="badge-status badge-status-low">WARNING</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded" style="background: #F0FDF4;">
+                                <span><strong class="text-success">Normal Stock:</strong> <code>Quantity &gt; Min Threshold</code></span>
+                                <span class="badge-status badge-status-healthy">OPTIMAL</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-white py-3 border-bottom">
-                        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-calendar-event text-warning me-2"></i> Expiry Tracking Rules</h6>
+                <div class="surface-card h-100 mb-0">
+                    <div class="card-header-clean">
+                        <h2 class="card-title-clean">
+                            <i class="bi bi-calendar-check text-primary"></i>
+                            <span>Expiry Classification Matrix</span>
+                        </h2>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush small">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><strong>Expired:</strong> <code>Expiry Date &lt; Today</code></span>
-                                <span class="badge bg-danger">Quarantine</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><strong>Expiring Today:</strong> <code>Expiry Date == Today</code></span>
-                                <span class="badge bg-danger">Urgent Action</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><strong>Expiring Soon:</strong> <code>Today &lt; Expiry Date &le; +30 Days</code></span>
-                                <span class="badge bg-warning text-dark">Warning</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span><strong>Normal:</strong> <code>Expiry Date &gt; +30 Days</code></span>
-                                <span class="badge bg-success">Shelf Stable</span>
-                            </li>
-                        </ul>
+                    <div class="card-body-clean p-3">
+                        <div class="d-flex flex-column gap-2 small">
+                            <div class="d-flex justify-content-between p-2 rounded" style="background: #FEF2F2;">
+                                <span><strong class="text-danger">Expired:</strong> <code>Expiry Date &lt; Today</code></span>
+                                <span class="badge-status badge-status-critical">QUARANTINE</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded" style="background: #FEF2F2;">
+                                <span><strong class="text-danger">Critical Expiry:</strong> <code>Today &le; Expiry &le; +7 Days</code></span>
+                                <span class="badge-status badge-status-critical">CRITICAL</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded" style="background: #FEFCE8;">
+                                <span><strong class="text-warning-emphasis">Expiring Soon:</strong> <code>+7 Days &lt; Expiry &le; +30 Days</code></span>
+                                <span class="badge-status badge-status-soon">SOON</span>
+                            </div>
+                            <div class="d-flex justify-content-between p-2 rounded" style="background: #F0FDF4;">
+                                <span><strong class="text-success">Normal Shelf:</strong> <code>Expiry &gt; +30 Days</code></span>
+                                <span class="badge-status badge-status-healthy">STABLE</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Student & Academic Info -->
-        <div class="card border-0 shadow-sm">
-            <div class="card-body p-4 text-center">
-                <h5 class="fw-bold text-dark mb-1">Developer & Academic Profile</h5>
-                <p class="text-muted mb-3">Department of Artificial Intelligence & Data Science</p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="https://github.com/kalyan4512-tech/pharmacy-stock-alert.git" target="_blank" class="btn btn-outline-dark btn-sm">
-                        <i class="bi bi-github me-1"></i> GitHub Repository
+        <!-- System & Developer Profile -->
+        <div class="surface-card">
+            <div class="card-body-clean p-4 text-center">
+                <h3 class="h5 fw-bold text-dark mb-1">B.Tech Artificial Intelligence &amp; Data Science</h3>
+                <p class="text-secondary small mb-3">Enterprise Cloud DevOps &amp; Pharmaceutical Systems Engineering Project</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="https://github.com/kalyan4512-tech/pharmacy-stock-alert.git" target="_blank" class="btn-secondary-white">
+                        <i class="bi bi-github"></i>
+                        <span>GitHub Repository</span>
                     </a>
-                    <a href="{{ url_for('health_check') }}" target="_blank" class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-heart-pulse me-1"></i> Health Check API
+                    <a href="{{ url_for('health_check') }}" target="_blank" class="btn-secondary-white">
+                        <i class="bi bi-heart-pulse text-success"></i>
+                        <span>Health Endpoint</span>
                     </a>
                 </div>
             </div>
@@ -147,4 +164,3 @@
     </div>
 </div>
 {% endblock %}
-

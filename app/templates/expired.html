@@ -3,79 +3,83 @@
 {% block title %}Expired Medicines Quarantine{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+<div class="page-header-block">
     <div>
-        <h1 class="h3 fw-bold text-dark mb-1">Expired Medicines & Quarantine Control</h1>
-        <p class="text-muted mb-0">Strict isolation of medications that have passed expiry date. Must NOT be sold or treated as regular stock.</p>
+        <h1 class="page-title">Expired Medicines &amp; Quarantine Control</h1>
+        <p class="page-subtitle">Strict containment of medicines that have passed expiration date. Never count as regular stock.</p>
     </div>
-    <div class="d-flex gap-2">
-        <a href="{{ url_for('export_csv') }}" class="btn btn-outline-danger shadow-sm">
-            <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export Destruction Log
+    <div class="d-flex align-items-center gap-2">
+        <a href="{{ url_for('export_csv') }}" class="btn-secondary-white">
+            <i class="bi bi-file-earmark-arrow-down"></i>
+            <span>Export Destruction Log</span>
         </a>
     </div>
 </div>
 
-<div class="card border-0 shadow-sm border-start border-danger border-4 mb-4">
-    <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <div class="d-flex align-items-center">
-                <div class="bg-danger text-white p-3 rounded me-3">
-                    <i class="bi bi-shield-slash-fill fs-3"></i>
-                </div>
-                <div>
-                    <h5 class="fw-bold mb-1 text-danger">Hazardous Stock Quarantine Active</h5>
-                    <p class="text-muted mb-0">Total <strong class="text-danger">{{ total_count }}</strong> expired batches detected. Remove from shelves immediately to prevent patient health risks and regulatory penalties.</p>
-                </div>
+<div class="alert-summary-banner is-critical mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <div class="stat-icon-wrapper bg-danger text-white" style="width: 40px; height: 40px; border-radius: 8px;">
+            <i class="bi bi-shield-slash-fill fs-5"></i>
+        </div>
+        <div>
+            <div class="fw-bold text-dark small">Active Biological &amp; Regulatory Quarantine</div>
+            <div class="small text-secondary">
+                Total <strong class="text-danger font-tabular">{{ total_count }}</strong> expired batches detected. Remove from inventory to ensure patient safety.
             </div>
-            <span class="badge bg-danger fs-6 px-3 py-2">STRICT QUARANTINE</span>
         </div>
     </div>
+    <span class="badge-status badge-status-critical font-tabular">STRICT QUARANTINE</span>
 </div>
 
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-        <h5 class="fw-bold mb-0 text-dark">Quarantined Medication List</h5>
-        <span class="badge bg-danger-subtle text-danger border">Red Alert</span>
+<div class="surface-card">
+    <div class="card-header-clean">
+        <h2 class="card-title-clean">
+            <i class="bi bi-x-octagon text-danger"></i>
+            <span>Quarantined Medication Batches</span>
+        </h2>
+        <span class="small text-danger fw-semibold">{{ total_count }} expired lots</span>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+    <div class="card-body-clean p-0">
+        <div class="table-responsive-clean">
+            <table class="table-clean">
+                <thead>
                     <tr>
-                        <th>Medicine</th>
+                        <th>Medicine &amp; Batch</th>
                         <th>Category</th>
-                        <th>Batch Number</th>
                         <th class="text-center">Quarantined Quantity</th>
                         <th>Expired On</th>
-                        <th>Days Expired</th>
-                        <th>Estimated Financial Loss</th>
+                        <th>Days Past Expiry</th>
+                        <th>Estimated Write-Off</th>
                         <th class="text-end">Destruction Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% if medicines %}
                         {% for med in medicines %}
-                            <tr class="table-danger">
+                            <tr class="row-critical">
                                 <td>
-                                    <span class="fw-bold text-danger">{{ med.name }}</span>
-                                    <small class="d-block text-muted">Mfg: {{ med.manufacturer }} &bull; Supplier: {{ med.supplier }}</small>
+                                    <div class="fw-semibold text-danger">{{ med.name }}</div>
+                                    <div class="small text-secondary">
+                                        <span class="batch-pill text-danger">{{ med.batch_number }}</span>
+                                        <span class="ms-1">&bull; {{ med.manufacturer }}</span>
+                                        {% if med.supplier %}
+                                            <span class="ms-1">&bull; {{ med.supplier }}</span>
+                                        {% endif %}
+                                    </div>
                                 </td>
-                                <td><span class="badge bg-light text-dark border">{{ med.category }}</span></td>
-                                <td><code class="text-danger">{{ med.batch_number }}</code></td>
-                                <td class="text-center">
-                                    <span class="fs-5 fw-bold text-danger">{{ med.quantity }}</span>
-                                </td>
-                                <td class="text-danger fw-semibold">{{ med.expiry_date }}</td>
+                                <td><span class="badge bg-light text-secondary border font-tabular">{{ med.category }}</span></td>
+                                <td class="text-center font-tabular fw-bold text-danger">{{ med.quantity }}</td>
+                                <td class="font-tabular fw-semibold text-danger">{{ med.expiry_date }}</td>
                                 <td>
-                                    <span class="badge bg-danger">{{ med.expiry_message }}</span>
+                                    <span class="badge-status badge-status-critical">{{ med.expiry_message }}</span>
                                 </td>
-                                <td class="fw-medium text-danger">
+                                <td class="font-tabular fw-semibold text-danger">
                                     ₹{{ "%.2f"|format(med.quantity * med.purchase_price) }}
                                 </td>
                                 <td class="text-end">
-                                    <form action="{{ url_for('delete_medicine_route', medicine_id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirm safe disposal and deletion of expired batch {{ med.batch_number }} ({{ med.name }})?');">
-                                        <button type="submit" class="btn btn-sm btn-danger shadow-sm">
-                                            <i class="bi bi-trash-fill me-1"></i> Dispose / Delete
+                                    <form action="{{ url_for('delete_medicine_route', medicine_id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirm safe destruction and permanent removal of expired batch {{ med.batch_number }} ({{ med.name }})?');">
+                                        <button type="submit" class="btn btn-sm btn-danger py-1 px-2">
+                                            <i class="bi bi-trash"></i> Destroy Lot
                                         </button>
                                     </form>
                                 </td>
@@ -83,10 +87,10 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="8" class="text-center py-5 text-success">
-                                <i class="bi bi-shield-check fs-1 d-block mb-2"></i>
-                                <h5>Quarantine Clear!</h5>
-                                <p class="small mb-0">No expired medications found in active inventory.</p>
+                            <td colspan="7" class="text-center py-5">
+                                <i class="bi bi-shield-check text-success fs-1 d-block mb-2"></i>
+                                <h6 class="fw-bold text-dark">Quarantine Area Clear</h6>
+                                <p class="text-secondary small mb-0">No expired medicine batches found in active inventory.</p>
                             </td>
                         </tr>
                     {% endif %}
@@ -96,4 +100,3 @@
     </div>
 </div>
 {% endblock %}
-

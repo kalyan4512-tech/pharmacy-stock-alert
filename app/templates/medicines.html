@@ -3,38 +3,40 @@
 {% block title %}Medicine Inventory{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+<div class="page-header-block">
     <div>
-        <h1 class="h3 fw-bold text-dark mb-1">Medicine Inventory Management</h1>
-        <p class="text-muted mb-0">Search, filter, track stock levels, and manage pharmacy medicines.</p>
+        <h1 class="page-title">Medicine Inventory Management</h1>
+        <p class="page-subtitle">Track real-time stock levels, threshold limits, and batch lifecycles.</p>
     </div>
-    <div class="d-flex gap-2">
-        <a href="{{ url_for('export_csv') }}" class="btn btn-outline-secondary shadow-sm">
-            <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+    <div class="d-flex align-items-center gap-2">
+        <a href="{{ url_for('export_csv') }}" class="btn-secondary-white">
+            <i class="bi bi-file-earmark-arrow-down"></i>
+            <span>Export CSV</span>
         </a>
-        <a href="{{ url_for('add_medicine_route') }}" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-circle me-1"></i> Add New Medicine
+        <a href="{{ url_for('add_medicine_route') }}" class="btn-primary-teal">
+            <i class="bi bi-plus-lg"></i>
+            <span>Add New Medicine</span>
         </a>
     </div>
 </div>
 
-<!-- Filter and Search Bar -->
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
+<!-- Search & Multi-Filter Card -->
+<div class="surface-card mb-4">
+    <div class="card-body-clean p-3">
         <form method="GET" action="{{ url_for('medicines_list') }}" class="row g-2 align-items-end">
-            <!-- Search Input -->
-            <div class="col-md-4 col-sm-12">
-                <label class="form-label small fw-semibold text-muted">Search Medicine</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
-                    <input type="text" name="search" class="form-control border-start-0" placeholder="Name, batch, manufacturer, supplier..." value="{{ search_query }}">
+            <!-- Search Query -->
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <label class="form-label-clean">Search Query</label>
+                <div class="header-search" style="position: relative;">
+                    <i class="bi bi-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-tertiary);"></i>
+                    <input type="text" name="search" id="tableSearchInput" class="form-control-clean" style="padding-left: 2.25rem;" placeholder="Search by name, batch, supplier..." value="{{ search_query }}">
                 </div>
             </div>
 
-            <!-- Category Filter -->
-            <div class="col-md-3 col-sm-6">
-                <label class="form-label small fw-semibold text-muted">Category</label>
-                <select name="category" class="form-select">
+            <!-- Category -->
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <label class="form-label-clean">Category</label>
+                <select name="category" class="form-select-clean">
                     <option value="">All Categories</option>
                     {% for cat in categories %}
                         <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
@@ -42,10 +44,10 @@
                 </select>
             </div>
 
-            <!-- Stock Status Filter -->
-            <div class="col-md-2 col-sm-6">
-                <label class="form-label small fw-semibold text-muted">Stock Status</label>
-                <select name="stock" class="form-select">
+            <!-- Stock Status -->
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                <label class="form-label-clean">Stock Level</label>
+                <select name="stock" class="form-select-clean">
                     <option value="">All Stock Levels</option>
                     <option value="NORMAL" {% if selected_stock == 'NORMAL' %}selected{% endif %}>Normal Stock</option>
                     <option value="LOW" {% if selected_stock == 'LOW' %}selected{% endif %}>Low Stock</option>
@@ -53,10 +55,10 @@
                 </select>
             </div>
 
-            <!-- Expiry Filter -->
-            <div class="col-md-2 col-sm-6">
-                <label class="form-label small fw-semibold text-muted">Expiry Status</label>
-                <select name="expiry" class="form-select">
+            <!-- Expiry Status -->
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                <label class="form-label-clean">Expiry Status</label>
+                <select name="expiry" class="form-select-clean">
                     <option value="">All Expiry Dates</option>
                     <option value="NORMAL" {% if selected_expiry == 'NORMAL' %}selected{% endif %}>Normal</option>
                     <option value="EXPIRING_SOON" {% if selected_expiry == 'EXPIRING_SOON' %}selected{% endif %}>Expiring Soon</option>
@@ -64,39 +66,46 @@
                 </select>
             </div>
 
-            <!-- Actions -->
-            <div class="col-md-1 col-sm-6 d-grid gap-1">
-                <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="{{ url_for('medicines_list') }}" class="btn btn-light border btn-sm text-muted">Reset</a>
+            <!-- Filter CTA -->
+            <div class="col-lg-1 col-md-1 col-sm-6 d-flex gap-1">
+                <button type="submit" class="btn-primary-teal w-100 justify-content-center" title="Apply Filters">
+                    <i class="bi bi-funnel"></i>
+                </button>
+                <a href="{{ url_for('medicines_list') }}" class="btn-secondary-white justify-content-center" title="Reset Filters">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
             </div>
         </form>
     </div>
 </div>
 
 <!-- Medicine Inventory Table -->
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+<div class="surface-card">
+    <div class="card-header-clean">
         <div>
-            <h5 class="fw-bold mb-0 text-dark">Medicines List</h5>
-            <small class="text-muted">Showing {{ total_count }} medicine records</small>
+            <h2 class="card-title-clean">
+                <i class="bi bi-prescription2 text-primary"></i>
+                <span>Medicine Catalog</span>
+            </h2>
+            <div class="small text-secondary mt-1">Showing <span class="fw-semibold text-dark font-tabular">{{ total_count }}</span> medicine records</div>
         </div>
-        <div class="d-flex gap-2">
-            <span class="badge bg-success-subtle text-success border">Green = Normal</span>
-            <span class="badge bg-warning-subtle text-warning-emphasis border">Orange = Expiring Soon</span>
-            <span class="badge bg-danger-subtle text-danger border">Red = Critical / Expired</span>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge-status badge-status-healthy">Normal</span>
+            <span class="badge-status badge-status-soon">Expiring Soon</span>
+            <span class="badge-status badge-status-critical">Critical / Expired</span>
         </div>
     </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0" id="medicinesTable">
-                <thead class="table-light">
+    <div class="card-body-clean p-0">
+        <div class="table-responsive-clean">
+            <table class="table-clean" id="medicinesTable">
+                <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Medicine Details</th>
+                        <th style="width: 60px;">ID</th>
+                        <th>Medicine &amp; Batch</th>
                         <th>Category</th>
                         <th class="text-center">Stock</th>
-                        <th class="text-center">Threshold</th>
-                        <th>Price (₹)</th>
+                        <th class="text-center">Min Threshold</th>
+                        <th>Pricing</th>
                         <th>Expiry Date</th>
                         <th class="text-center">Stock Status</th>
                         <th class="text-center">Expiry Status</th>
@@ -106,53 +115,67 @@
                 <tbody>
                     {% if medicines %}
                         {% for med in medicines %}
-                            <tr class="{{ med.expiry_row_class }}">
-                                <td class="fw-semibold text-muted">#{{ med.id }}</td>
+                            <tr class="{% if med.expiry_status == 'EXPIRED' %}row-critical{% elif med.is_critical_7_days %}row-warning{% endif %}">
+                                <td class="text-secondary small font-tabular">#{{ med.id }}</td>
                                 <td>
-                                    <div class="fw-bold text-dark">{{ med.name }}</div>
-                                    <div class="small text-muted">
-                                        <span>Mfg: {{ med.manufacturer }}</span> &bull; 
-                                        <span>Batch: <code class="text-dark">{{ med.batch_number }}</code></span>
+                                    <div class="fw-semibold text-dark">{{ med.name }}</div>
+                                    <div class="small text-secondary d-flex align-items-center gap-1 flex-wrap mt-1">
+                                        <span class="batch-pill">{{ med.batch_number }}</span>
+                                        <span>&bull; {{ med.manufacturer }}</span>
+                                        {% if med.supplier %}
+                                            <span class="d-none d-md-inline">&bull; {{ med.supplier }}</span>
+                                        {% endif %}
                                     </div>
-                                    {% if med.supplier %}
-                                        <div class="small text-muted">Supplier: {{ med.supplier }}</div>
-                                    {% endif %}
                                 </td>
                                 <td>
-                                    <span class="badge bg-light text-dark border">{{ med.category }}</span>
+                                    <span class="badge bg-light text-secondary border font-tabular">{{ med.category }}</span>
                                 </td>
-                                <td class="text-center">
+                                <td class="text-center font-tabular">
                                     <span class="fw-bold fs-6 {% if med.quantity == 0 %}text-danger{% elif med.quantity <= med.min_threshold %}text-danger{% else %}text-dark{% endif %}">
                                         {{ med.quantity }}
                                     </span>
                                 </td>
-                                <td class="text-center">
-                                    <span class="badge bg-secondary-subtle text-dark border">{{ med.min_threshold }}</span>
+                                <td class="text-center font-tabular">
+                                    <span class="text-secondary">{{ med.min_threshold }}</span>
+                                </td>
+                                <td class="font-tabular small">
+                                    <div class="text-secondary">Buy: ₹{{ "%.2f"|format(med.purchase_price) }}</div>
+                                    <div class="fw-semibold text-dark">Sell: ₹{{ "%.2f"|format(med.selling_price) }}</div>
                                 </td>
                                 <td>
-                                    <div class="small">Buy: ₹{{ "%.2f"|format(med.purchase_price) }}</div>
-                                    <div class="small fw-semibold text-success">Sell: ₹{{ "%.2f"|format(med.selling_price) }}</div>
-                                </td>
-                                <td>
-                                    <div class="fw-medium text-dark">{{ med.expiry_date }}</div>
-                                    <small class="d-block {% if med.expiry_status == 'EXPIRED' %}text-danger fw-bold{% elif med.expiry_status == 'EXPIRING_TODAY' %}text-danger fw-bold{% elif med.expiry_status == 'EXPIRING_SOON' %}text-warning-emphasis fw-semibold{% else %}text-muted{% endif %}">
+                                    <div class="font-tabular fw-medium text-dark">{{ med.expiry_date }}</div>
+                                    <div class="small {% if med.expiry_status == 'EXPIRED' %}text-danger fw-semibold{% elif med.is_critical_7_days %}text-danger fw-semibold{% elif med.expiry_status == 'EXPIRING_SOON' %}text-warning-emphasis{% else %}text-secondary{% endif %}">
                                         {{ med.expiry_message }}
-                                    </small>
+                                    </div>
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge {{ med.stock_badge }}">{{ med.stock_label }}</span>
+                                    {% if med.stock_status == 'OUT_OF_STOCK' %}
+                                        <span class="badge-status badge-status-critical">OUT OF STOCK</span>
+                                    {% elif med.stock_status == 'LOW_STOCK' %}
+                                        <span class="badge-status badge-status-low">LOW STOCK</span>
+                                    {% else %}
+                                        <span class="badge-status badge-status-healthy">NORMAL</span>
+                                    {% endif %}
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge {{ med.expiry_badge }}">{{ med.expiry_label }}</span>
+                                    {% if med.expiry_status == 'EXPIRED' %}
+                                        <span class="badge-status badge-status-critical">EXPIRED</span>
+                                    {% elif med.is_critical_7_days %}
+                                        <span class="badge-status badge-status-critical">CRITICAL</span>
+                                    {% elif med.expiry_status == 'EXPIRING_SOON' %}
+                                        <span class="badge-status badge-status-soon">EXPIRING SOON</span>
+                                    {% else %}
+                                        <span class="badge-status badge-status-healthy">NORMAL</span>
+                                    {% endif %}
                                 </td>
                                 <td class="text-end">
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="{{ url_for('edit_medicine_route', medicine_id=med.id) }}" class="btn btn-outline-primary" title="Edit Medicine">
-                                            <i class="bi bi-pencil-fill"></i>
+                                    <div class="d-inline-flex gap-1">
+                                        <a href="{{ url_for('edit_medicine_route', medicine_id=med.id) }}" class="btn btn-sm btn-secondary-white py-1 px-2" title="Edit Medicine Record">
+                                            <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="{{ url_for('delete_medicine_route', medicine_id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to permanently delete {{ med.name }} (Batch: {{ med.batch_number }})?');">
-                                            <button type="submit" class="btn btn-outline-danger" title="Delete Medicine">
-                                                <i class="bi bi-trash-fill"></i>
+                                        <form action="{{ url_for('delete_medicine_route', medicine_id=med.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete medicine {{ med.name }} (Batch: {{ med.batch_number }})?');">
+                                            <button type="submit" class="btn btn-sm btn-secondary-white py-1 px-2 text-danger" title="Delete Medicine">
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -161,18 +184,23 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="10" class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
-                                <h5>No medicines found matching criteria</h5>
-                                <p class="small mb-3">Try adjusting your search query or filter selections.</p>
-                                <a href="{{ url_for('medicines_list') }}" class="btn btn-sm btn-outline-secondary">Reset Filters</a>
+                            <td colspan="10" class="text-center py-5">
+                                <i class="bi bi-inbox fs-1 d-block mb-2 text-tertiary"></i>
+                                <h6 class="fw-bold text-dark">No Medicines Found</h6>
+                                <p class="text-secondary small mb-3">No inventory items matched your active search or filter criteria.</p>
+                                <a href="{{ url_for('medicines_list') }}" class="btn-secondary-white">Clear All Filters</a>
                             </td>
                         </tr>
                     {% endif %}
                 </tbody>
             </table>
         </div>
+        <!-- Client-side empty state search fallback -->
+        <div id="clientEmptyState" class="text-center py-5" style="display: none;">
+            <i class="bi bi-search fs-1 d-block mb-2 text-tertiary"></i>
+            <h6 class="fw-bold text-dark">No Matching Medicines</h6>
+            <p class="text-secondary small mb-0">Try searching for a different name, batch number, or manufacturer.</p>
+        </div>
     </div>
 </div>
 {% endblock %}
-
