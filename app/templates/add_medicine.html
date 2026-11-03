@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Add Medicine{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9 col-md-11">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+                <h1 class="h3 fw-bold text-dark mb-1">Add New Medicine</h1>
+                <p class="text-muted mb-0">Record a new medicine batch into pharmacy inventory with stock thresholds.</p>
+            </div>
+            <a href="{{ url_for('medicines_list') }}" class="btn btn-outline-secondary btn-sm shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Back to Inventory
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-primary-subtle text-primary p-2 rounded">
+                        <i class="bi bi-capsule-pill fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark">Medicine Specification Form</h5>
+                        <small class="text-muted">Fields marked with <span class="text-danger">*</span> are mandatory</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('add_medicine_route') }}" method="POST" id="medicineForm">
+                    <div class="row g-3">
+                        <!-- Medicine Name -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Medicine Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" placeholder="e.g. Paracetamol 650mg, Amoxicillin" value="{{ form_data.get('name', '') }}" required>
+                            <small class="text-muted">Include strength / dosage if applicable.</small>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Category <span class="text-danger">*</span></label>
+                            <input type="text" name="category" list="categoryOptions" class="form-control" placeholder="e.g. Antibiotics, Analgesics, Antidiabetic" value="{{ form_data.get('category', '') }}" required>
+                            <datalist id="categoryOptions">
+                                {% for cat in categories %}
+                                    <option value="{{ cat }}">
+                                {% endfor %}
+                                <option value="Antibiotics">
+                                <option value="Analgesics & Antipyretic">
+                                <option value="Antihistamines">
+                                <option value="Antidiabetic">
+                                <option value="Cardiovascular">
+                                <option value="Gastrointestinal">
+                                <option value="Respiratory">
+                                <option value="Vitamins & Supplements">
+                                <option value="Ophthalmic">
+                            </datalist>
+                        </div>
+
+                        <!-- Batch Number -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Batch Number <span class="text-danger">*</span></label>
+                            <input type="text" name="batch_number" class="form-control" placeholder="e.g. PCM-2026-901" value="{{ form_data.get('batch_number', '') }}" required>
+                            <small class="text-muted">Unique batch identifier for stock tracking.</small>
+                        </div>
+
+                        <!-- Manufacturer -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Manufacturer <span class="text-danger">*</span></label>
+                            <input type="text" name="manufacturer" class="form-control" placeholder="e.g. Cipla Ltd, Sun Pharma, Abbott" value="{{ form_data.get('manufacturer', '') }}" required>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="col-md-3 col-sm-6">
+                            <label class="form-label fw-semibold text-dark">Current Stock Quantity <span class="text-danger">*</span></label>
+                            <input type="number" name="quantity" class="form-control" min="0" placeholder="0" value="{{ form_data.get('quantity', 0) }}" required>
+                            <small class="text-muted">Total units available.</small>
+                        </div>
+
+                        <!-- Minimum Stock Threshold -->
+                        <div class="col-md-3 col-sm-6">
+                            <label class="form-label fw-semibold text-dark">Min Threshold <span class="text-danger">*</span></label>
+                            <input type="number" name="min_threshold" class="form-control" min="1" placeholder="10" value="{{ form_data.get('min_threshold', 10) }}" required>
+                            <small class="text-muted">Triggers low-stock alert.</small>
+                        </div>
+
+                        <!-- Purchase Price -->
+                        <div class="col-md-3 col-sm-6">
+                            <label class="form-label fw-semibold text-dark">Purchase Price (₹) <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" name="purchase_price" class="form-control" min="0" placeholder="0.00" value="{{ form_data.get('purchase_price', '') }}" required>
+                        </div>
+
+                        <!-- Selling Price -->
+                        <div class="col-md-3 col-sm-6">
+                            <label class="form-label fw-semibold text-dark">Selling Price (₹) <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" name="selling_price" class="form-control" min="0" placeholder="0.00" value="{{ form_data.get('selling_price', '') }}" required>
+                        </div>
+
+                        <!-- Manufacturing Date -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Manufacturing Date <span class="text-danger">*</span></label>
+                            <input type="date" name="mfg_date" class="form-control" value="{{ form_data.get('mfg_date', '') }}" required>
+                        </div>
+
+                        <!-- Expiry Date -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Expiry Date <span class="text-danger">*</span></label>
+                            <input type="date" name="expiry_date" class="form-control" value="{{ form_data.get('expiry_date', '') }}" required>
+                            <small class="text-muted">Must be strictly after manufacturing date.</small>
+                        </div>
+
+                        <!-- Supplier -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold text-dark">Supplier / Vendor Name <span class="text-danger">*</span></label>
+                            <input type="text" name="supplier" class="form-control" placeholder="e.g. Apex Pharma Distributors, Metro Meds Supply" value="{{ form_data.get('supplier', '') }}" required>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold text-dark">Description & Storage Instructions</label>
+                            <textarea name="description" rows="3" class="form-control" placeholder="Optional notes, side effects, refrigeration instructions...">{{ form_data.get('description', '') }}</textarea>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('medicines_list') }}" class="btn btn-light border px-4">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
+                            <i class="bi bi-check-lg me-1"></i> Save Medicine
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,207 @@
+/* ==========================================================================
+   MedStock PRO — Modern Medical & Pharmacy Inventory Theme
+   ========================================================================== */
+
+:root {
+    --pharma-dark-blue: #0b2545;
+    --pharma-navy: #13315c;
+    --pharma-blue: #134074;
+    --pharma-teal: #00a896;
+    --pharma-teal-dark: #028090;
+    --pharma-green: #198754;
+    --pharma-orange: #fd7e14;
+    --pharma-red: #dc3545;
+    --pharma-bg: #f8fafc;
+    --pharma-card-bg: #ffffff;
+    --pharma-border: #e2e8f0;
+    --pharma-text: #1e293b;
+    --pharma-muted: #64748b;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--pharma-bg);
+    color: var(--pharma-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* ================= Top Navigation ================= */
+.pharma-navbar {
+    background: linear-gradient(135deg, var(--pharma-dark-blue) 0%, var(--pharma-navy) 100%);
+    border-bottom: 2px solid rgba(0, 168, 150, 0.4);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.brand-icon-box {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--pharma-teal) 0%, var(--pharma-teal-dark) 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 168, 150, 0.3);
+}
+
+.brand-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+}
+
+.brand-accent {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--pharma-teal);
+    background: rgba(0, 168, 150, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+}
+
+.brand-subtitle {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    line-height: 1;
+}
+
+.navbar-nav .nav-link {
+    color: #cbd5e1;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-teal {
+    background-color: var(--pharma-teal);
+    border-color: var(--pharma-teal);
+}
+
+.btn-teal:hover {
+    background-color: var(--pharma-teal-dark);
+    border-color: var(--pharma-teal-dark);
+}
+
+/* Status Pulse Animation */
+.status-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+}
+
+.status-pulse::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: inherit;
+    opacity: 0.75;
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.6); opacity: 0; }
+    100% { transform: scale(0.95); opacity: 0; }
+}
+
+/* ================= Stat Cards ================= */
+.stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.stat-icon-wrapper {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* ================= Tables ================= */
+.table thead th {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: var(--pharma-muted);
+    border-top: none;
+    padding: 0.85rem 1rem;
+    background-color: #f1f5f9;
+}
+
+.table tbody td {
+    padding: 0.85rem 1rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(241, 245, 249, 0.6);
+}
+
+/* Highlight rows */
+tr.table-danger {
+    background-color: #fee2e2 !important;
+}
+
+tr.table-warning {
+    background-color: #fef3c7 !important;
+}
+
+/* ================= Badges ================= */
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 0.35em 0.65em;
+}
+
+/* ================= Form Controls ================= */
+.form-control, .form-select {
+    border-radius: 8px;
+    border-color: #cbd5e1;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--pharma-teal);
+    box-shadow: 0 0 0 0.25rem rgba(0, 168, 150, 0.25);
+}
+
+/* ================= Footer ================= */
+.pharma-footer {
+    background-color: #ffffff;
+    font-size: 0.85rem;
+}
+

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Low Stock Alerts{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+        <h1 class="h3 fw-bold text-dark mb-1">Low Stock Alerts & Depletion Tracker</h1>
+        <p class="text-muted mb-0">Medicines where current quantity &le; minimum threshold or quantity = 0.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('add_medicine_route') }}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i> Add Stock
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm border-start border-danger border-4 mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <div class="bg-danger-subtle text-danger p-3 rounded me-3">
+                    <i class="bi bi-exclamation-octagon-fill fs-3"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1 text-danger">Stock Replenishment Required</h5>
+                    <p class="text-muted mb-0">Total <strong class="text-danger">{{ total_count }}</strong> items need urgent supplier reorders.</p>
+                </div>
+            </div>
+            <a href="{{ url_for('export_csv') }}" class="btn btn-outline-danger btn-sm">Export Reorder List</a>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="fw-bold mb-0 text-dark">Depleted & Under-Threshold Medicines</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Category</th>
+                        <th class="text-center">Current Quantity</th>
+                        <th class="text-center">Min Threshold</th>
+                        <th>Deficit / Shortfall</th>
+                        <th>Supplier</th>
+                        <th class="text-center">Alert Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if medicines %}
+                        {% for med in medicines %}
+                            <tr>
+                                <td>
+                                    <span class="fw-bold text-dark">{{ med.name }}</span>
+                                    <small class="d-block text-muted">Batch: <code>{{ med.batch_number }}</code> &bull; {{ med.manufacturer }}</small>
+                                </td>
+                                <td><span class="badge bg-light text-dark border">{{ med.category }}</span></td>
+                                <td class="text-center">
+                                    <span class="fs-5 fw-bold text-danger">{{ med.quantity }}</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-secondary-subtle text-dark border">{{ med.min_threshold }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger-subtle text-danger border">
+                                        {% set shortfall = med.min_threshold - med.quantity %}
+                                        Short by {{ shortfall if shortfall > 0 else 0 }} units
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="small fw-medium">{{ med.supplier }}</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge {{ med.stock_badge }}">{{ med.stock_label }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('edit_medicine_route', medicine_id=med.id) }}" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-cart-plus me-1"></i> Update / Reorder
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-success">
+                                <i class="bi bi-check-circle fs-1 d-block mb-2"></i>
+                                <h5>All stock levels optimal!</h5>
+                                <p class="small mb-0">No medicines are currently at or below minimum threshold.</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

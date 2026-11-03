@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pharmacy Stock Alert System{% endblock %} | MedStock Pro</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-light">
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark pharma-navbar sticky-top shadow-sm">
+        <div class="container-fluid px-lg-4">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('dashboard') }}">
+                <div class="brand-icon-box">
+                    <i class="bi bi-capsule-pill text-white fs-4"></i>
+                </div>
+                <div>
+                    <span class="brand-title">MedStock</span><span class="brand-accent">PRO</span>
+                    <small class="d-block brand-subtitle">Pharmacy Stock & Expiry Alert System</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-lg-1">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                            <i class="bi bi-grid-1x2-fill me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'medicines_list' %}active{% endif %}" href="{{ url_for('medicines_list') }}">
+                            <i class="bi bi-prescription2 me-1"></i> Inventory
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'add_medicine_route' %}active{% endif %}" href="{{ url_for('add_medicine_route') }}">
+                            <i class="bi bi-plus-circle-fill me-1 text-success"></i> Add Medicine
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'alert' in request.path or 'expired' in request.path %}active{% endif %}" href="#" id="alertsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bell-fill me-1 text-warning"></i> Alerts
+                            {% set total_warn = nav_metrics.total_low_stock + nav_metrics.total_expiry_alerts %}
+                            {% if total_warn > 0 %}
+                                <span class="badge rounded-pill bg-danger ms-1">{{ total_warn }}</span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow" aria-labelledby="alertsDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('alerts_center') }}"><i class="bi bi-shield-exclamation me-2"></i> All Alerts Hub</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url_for('low_stock_alerts_page') }}">
+                                    <span><i class="bi bi-graph-down-arrow text-danger me-2"></i> Low Stock</span>
+                                    <span class="badge bg-danger rounded-pill">{{ nav_metrics.total_low_stock }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url_for('expiry_alerts_page') }}">
+                                    <span><i class="bi bi-hourglass-split text-warning me-2"></i> Expiring Soon</span>
+                                    <span class="badge bg-warning text-dark rounded-pill">{{ nav_metrics.expiring_soon_count + nav_metrics.expiring_today_count }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url_for('expired_medicines_page') }}">
+                                    <span><i class="bi bi-x-octagon-fill text-danger me-2"></i> Expired Stock</span>
+                                    <span class="badge bg-danger rounded-pill">{{ nav_metrics.expired_count }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'reports_page' %}active{% endif %}" href="{{ url_for('reports_page') }}">
+                            <i class="bi bi-bar-chart-line-fill me-1"></i> Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'about_page' %}active{% endif %}" href="{{ url_for('about_page') }}">
+                            <i class="bi bi-info-circle-fill me-1"></i> About
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="system-status-indicator d-none d-md-flex align-items-center text-white-50 small">
+                        <span class="status-pulse bg-success me-2"></span>
+                        <span>AWS Cloud Live | {{ current_date }}</span>
+                    </div>
+                    <a href="{{ url_for('add_medicine_route') }}" class="btn btn-sm btn-teal text-white shadow-sm fw-medium px-3">
+                        <i class="bi bi-plus-lg me-1"></i> Quick Add
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container-fluid px-lg-4 py-4">
+        <!-- Flash Alert Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="row">
+                    <div class="col-12">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm d-flex align-items-center" role="alert">
+                                {% if category == 'success' %}
+                                    <i class="bi bi-check-circle-fill fs-5 me-2 text-success"></i>
+                                {% elif category == 'danger' %}
+                                    <i class="bi bi-exclamation-triangle-fill fs-5 me-2 text-danger"></i>
+                                {% elif category == 'warning' %}
+                                    <i class="bi bi-exclamation-circle-fill fs-5 me-2 text-warning"></i>
+                                {% else %}
+                                    <i class="bi bi-info-circle-fill fs-5 me-2 text-info"></i>
+                                {% endif %}
+                                <div class="flex-grow-1">{{ message }}</div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Child Page Content -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="pharma-footer mt-5 py-4 bg-white border-top">
+        <div class="container-fluid px-lg-4">
+            <div class="row align-items-center gy-3">
+                <div class="col-md-6 text-center text-md-start">
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                        <i class="bi bi-capsule-pill text-primary fs-5"></i>
+                        <span class="fw-bold text-dark">MedStock PRO</span>
+                        <span class="text-muted">| Pharmacy Stock & Expiry Alert System</span>
+                    </div>
+                    <small class="text-muted d-block mt-1">B.Tech Artificial Intelligence & Data Science Engineering Project</small>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <span class="badge bg-secondary-subtle text-dark border me-2">
+                        <i class="bi bi-git me-1"></i> CI/CD: Jenkins + Docker
+                    </span>
+                    <span class="badge bg-primary-subtle text-primary border me-2">
+                        <i class="bi bi-cloud-check-fill me-1"></i> AWS ECR & EC2 (SSM)
+                    </span>
+                    <span class="badge bg-success-subtle text-success border">
+                        <i class="bi bi-activity me-1"></i> Status: 200 OK
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Application JS -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
+

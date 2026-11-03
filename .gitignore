@@ -1,9 +1,39 @@
-.terraform/
-*.tfstate
-*.tfstate.*
-tfplan
-*.tfplan
-*.pem
-.env
-.DS_Store
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# SQLite & Persistent Data
+*.db
+*.sqlite3
+app/data/*.db
+data/*.db
+
+# Environment variables & secrets
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Terraform local state (keep sensitive TF state out of git)
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+terraform/.terraform.lock.hcl
